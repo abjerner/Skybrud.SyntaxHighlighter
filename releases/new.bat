@@ -1,0 +1,1 @@
+"C:\Program Files\WinRAR\winrar.exe" a -ep1 Skybrud.SyntaxHighlighter.vnext.zip ../src/Skybrud.SyntaxHighlighter/bin/Release/Skybrud.SyntaxHighlighter.dll
