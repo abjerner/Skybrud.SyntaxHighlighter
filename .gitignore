@@ -1,0 +1,6 @@
+src/Skybrud.SyntaxHighlighter/obj/
+src/Skybrud.SyntaxHighlighter/packages/
+src/Skybrud.SyntaxHighlighter/bin/
+src/packages/
+*.user
+*.suo
