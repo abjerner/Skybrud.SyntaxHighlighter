@@ -11,7 +11,7 @@
     <iconUrl>http://www.skybrud.dk/img/5431sk/icon/favicon.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <tags>Syntax, Highlight, Highlighter, ColorCode</tags>
+    <tags>Syntax, Highlight, Highlighter, ColorCode, Skybrud</tags>
     <dependencies />
   </metadata>
 </package>
