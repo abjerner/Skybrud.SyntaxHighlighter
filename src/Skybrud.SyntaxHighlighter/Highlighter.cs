@@ -1,5 +1,9 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
 using ColorCode;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Skybrud.SyntaxHighlighter {
 
@@ -45,6 +49,16 @@ namespace Skybrud.SyntaxHighlighter {
 
         }
 
+        public static string HighlightXml(XNode xml) {
+            if (xml == null) throw new ArgumentNullException("xml");
+            return HighlightXml(xml + "");
+        }
+
+        public static string HighlightXml(XNode xml, SaveOptions options) {
+            if (xml == null) throw new ArgumentNullException("xml");
+            return HighlightXml(xml.ToString(options));
+        }
+
         public static string HighlightHtml(string source) {
             return HighlightXml(source);
         }
@@ -55,6 +69,21 @@ namespace Skybrud.SyntaxHighlighter {
 
         public static string HighlightJson(string source) {
             return new JsonHighlighter().Highlight(source);
+        }
+
+        public static string HighlightJson(string source, Formatting formatting) {
+            source = JToken.Parse(source).ToString(formatting);
+            return new JsonHighlighter().Highlight(source);
+        }
+
+        public static string HighlightJson(JToken token) {
+            if (token == null) throw new ArgumentNullException("token");
+            return new JsonHighlighter().Highlight(token + "");
+        }
+
+        public static string HighlightJson(JToken token, Formatting formatting) {
+            if (token == null) throw new ArgumentNullException("token");
+            return new JsonHighlighter().Highlight(token.ToString(formatting));
         }
 
     }
