@@ -15,6 +15,7 @@ namespace Skybrud.SyntaxHighlighter {
             html = html.Replace("<div style=\"color:Black;background-color:White;\">", "<div class=\"highlight json\">");
 
             html = html.Replace("<span style=\"color:#A31515;\">", "<span class=\"string\">");
+            html = html.Replace("<span style=\"color:Blue;\">", "<span class=\"constant\">");
 
             try {
 
