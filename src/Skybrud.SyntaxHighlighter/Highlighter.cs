@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using ColorCode;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Skybrud.SyntaxHighlighter.Highlighters.Json;
 
 namespace Skybrud.SyntaxHighlighter {
 
