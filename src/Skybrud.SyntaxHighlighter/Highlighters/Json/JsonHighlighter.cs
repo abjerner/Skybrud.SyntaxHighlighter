@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
 
@@ -24,8 +25,12 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
                         temp += "<span class=\"constant\">" + str + "</span>";
                     } else if (Regex.IsMatch(str, "^[0-9]+\\.[0-9]+$")) {
                         temp += "<span class=\"constant\">" + str + "</span>";
+                    } else if (Regex.IsMatch(str, "^-[0-9]+$")) {
+                        temp += "<span class=\"constant\">" + str + "</span>";
+                    } else if (Regex.IsMatch(str, "^-[0-9]+\\.[0-9]+$")) {
+                        temp += "<span class=\"constant\">" + str + "</span>";
                     } else if (str.StartsWith("\"") && str.EndsWith("\"")) {
-                        temp += "<span class=\"string\">" + str + "</span>";
+                        temp += "<span class=\"string\">" + HttpUtility.HtmlEncode(str) + "</span>";
                     } else {
                         temp += str;
                     }
