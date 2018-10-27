@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using ColorCode;
 
-namespace Skybrud.SyntaxHighlighter {
+namespace Skybrud.SyntaxHighlighter.Highlighters.JavaScript {
 
     internal class JavaScriptHighlighter {
 
