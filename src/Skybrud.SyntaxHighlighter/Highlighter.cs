@@ -20,12 +20,12 @@ namespace Skybrud.SyntaxHighlighter {
         }
 
         public static string HighlightXml(XNode xml) {
-            if (xml == null) throw new ArgumentNullException("xml");
+            if (xml == null) throw new ArgumentNullException(nameof(xml));
             return HighlightXml(xml + "");
         }
 
         public static string HighlightXml(XNode xml, SaveOptions options) {
-            if (xml == null) throw new ArgumentNullException("xml");
+            if (xml == null) throw new ArgumentNullException(nameof(xml));
             return HighlightXml(xml.ToString(options));
         }
 
