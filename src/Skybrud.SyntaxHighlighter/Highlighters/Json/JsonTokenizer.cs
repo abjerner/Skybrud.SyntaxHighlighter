@@ -9,9 +9,7 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
 
         protected Stack<List<object>> Stack { get; private set; }
 
-        protected List<object> Current {
-            get { return Stack.Peek(); }
-        }
+        protected List<object> Current => Stack.Peek();
 
         protected string Buffer { get; private set; }
 

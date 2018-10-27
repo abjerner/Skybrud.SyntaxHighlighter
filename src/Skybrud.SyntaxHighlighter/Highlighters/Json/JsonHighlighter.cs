@@ -10,7 +10,7 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
         /// Highlights the specified JSON string.
         /// </summary>
         /// <param name="str">The JSON strin to be highlighted.</param>
-        /// <returns></returns>
+        /// <returns>The highlighted JSON string.</returns>
         public virtual string Highlight(string str) {
             List<object> tokens = JsonTokenizer.GetTokens(str ?? "");
             return "<div class=\"highlight json\"><pre>" + ToHtml(tokens) + "</pre></div>";

@@ -80,12 +80,12 @@ namespace Skybrud.SyntaxHighlighter {
         }
 
         public static string HighlightJson(JToken token) {
-            if (token == null) throw new ArgumentNullException("token");
+            if (token == null) throw new ArgumentNullException(nameof(token));
             return new JsonHighlighter().Highlight(token + "");
         }
 
         public static string HighlightJson(JToken token, Formatting formatting) {
-            if (token == null) throw new ArgumentNullException("token");
+            if (token == null) throw new ArgumentNullException(nameof(token));
             return new JsonHighlighter().Highlight(token.ToString(formatting));
         }
 
