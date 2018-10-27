@@ -4,3 +4,4 @@ src/Skybrud.SyntaxHighlighter/bin/
 src/packages/
 *.user
 *.suo
+src/.vs/
