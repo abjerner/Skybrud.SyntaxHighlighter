@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Highlighters\Xml\XmlHighlighter.cs" />
     <Compile Include="Highlighters\CSharp\CSharpHighlighter.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Highlighter.cs" />
