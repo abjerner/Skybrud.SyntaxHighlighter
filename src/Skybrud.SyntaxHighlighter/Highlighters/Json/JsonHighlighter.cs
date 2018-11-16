@@ -41,6 +41,8 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
                         temp += RenderNumber(str);
                     } else if (str.StartsWith("\"") && str.EndsWith("\"")) {
                         temp += RenderString(str);
+                    } else if (str.StartsWith("'") && str.EndsWith("'")) {
+                        temp += RenderString(str);
                     } else if (str.StartsWith("/")) {
                         temp += RenderComment(str);
                     } else {

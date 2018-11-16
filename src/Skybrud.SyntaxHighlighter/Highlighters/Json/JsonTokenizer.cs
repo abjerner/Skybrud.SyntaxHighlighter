@@ -30,6 +30,9 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
             bool inquotes = false;
             bool comment = false;
 
+            // The current character used for string values
+            char quote = '"';
+
             // Iterate through each character of the string
             foreach (char x in inputText) {
                 if (escaped) {
@@ -49,9 +52,14 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
                     } else if (x == '\\') {
                         Buffer += x;
                         escaped = true;
-                    } else if (x == '\"') {
+                    } else if (x == '"' || x == '\'') {
                         Buffer += x;
-                        inquotes = !inquotes;
+                        if (inquotes && x == quote) {
+                            inquotes = false;
+                        } else {
+                            inquotes = true;
+                            quote = x;
+                        }
                     } else if (!inquotes) {
                         if (x == ',' || x == ':') {
                             PushBuffer();
