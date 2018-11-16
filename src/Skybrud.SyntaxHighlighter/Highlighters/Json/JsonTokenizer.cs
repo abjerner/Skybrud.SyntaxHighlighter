@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
@@ -12,6 +13,8 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
         protected List<object> Current => Stack.Peek();
 
         protected string Buffer { get; private set; }
+
+        protected JsonTokenType Type { get; private set; }
 
         #endregion
 
@@ -27,59 +30,99 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
 
             // Some flags used for the tokenizing
             bool escaped = false;
-            bool inquotes = false;
-            bool comment = false;
+
+            Type = JsonTokenType.Other;
 
             // The current character used for string values
             char quote = '"';
 
             // Iterate through each character of the string
             foreach (char x in inputText) {
-                if (escaped) {
-                    Buffer += x;
-                    escaped = false;
-                } else if (comment) {
-                    if (x == '\r' || x == '\n') {
-                        PushBuffer();
-                        comment = false;
-                    }
-                    Buffer += x;
-                } else {
-                    if (!inquotes && x == '/') {
-                        PushBuffer();
-                        comment = true;
-                        Buffer += x;
-                    } else if (x == '\\') {
-                        Buffer += x;
-                        escaped = true;
-                    } else if (x == '"' || x == '\'') {
-                        Buffer += x;
-                        if (inquotes && x == quote) {
-                            inquotes = false;
-                        } else {
-                            inquotes = true;
-                            quote = x;
+
+                switch (Type) {
+
+                    case JsonTokenType.String:
+
+                        if (x == quote && !escaped) {
+                            Buffer += x;
+                            PushBuffer();
+                            continue;
                         }
-                    } else if (!inquotes) {
-                        if (x == ',' || x == ':') {
-                            PushBuffer();
-                            Buffer += x;
-                            PushBuffer();
-                        } else if (x == '[' || x == '{') {
-                            Buffer += x;
-                            PushBuffer();
-                            Increment();
-                        } else if (x == ']' || x == '}') {
-                            PushBuffer();
-                            Decrement();
-                            Buffer += x;
-                        } else {
-                            Buffer += x;
-                        }
-                    } else {
+
+                        escaped = x == '\\';
+
                         Buffer += x;
-                    }
+                        break;
+
+                    case JsonTokenType.Comment:
+
+                        if (x == '\r' || x == '\n') {
+                            PushBuffer();
+                            Buffer += x;
+                            continue;
+                        }
+
+                        Buffer += x;
+                        break;
+
+                    default:
+
+                        switch (x) {
+
+                            case '/':
+                                PushBuffer();
+                                Type = JsonTokenType.Comment;
+                                Buffer += x;
+                                break;
+
+                            case '"':
+                            case '\'':
+                                PushBuffer();
+                                Type = JsonTokenType.String;
+                                Buffer += x;
+                                quote = x;
+                                break;
+
+                            case '{':
+                                PushBuffer();
+                                PushBuffer(x, JsonTokenType.ObjectOpen);
+                                Increment();
+                                break;
+
+                            case '}':
+                                PushBuffer();
+                                Decrement();
+                                PushBuffer(x, JsonTokenType.ObjectClose);
+                                break;
+
+                            case '[':
+                                PushBuffer();
+                                PushBuffer(x, JsonTokenType.ArrayOpen);
+                                Increment();
+                                break;
+
+                            case ']':
+                                PushBuffer();
+                                Decrement();
+                                PushBuffer(x, JsonTokenType.ArrayClose);
+                                break;
+
+                            case ':':
+                            case ',':
+                                PushBuffer();
+                                PushBuffer(x, JsonTokenType.Other);
+                                break;
+
+                            default:
+                                Buffer += x;
+                                break;
+
+                        }
+
+                        break;
+
                 }
+
             }
 
             PushBuffer();
@@ -99,23 +142,71 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
         void Decrement() {
             Stack.Pop();
         }
-
+        
         void PushBuffer() {
+            PushBuffer(Type);
+        }
+        
+        void PushBuffer(char chr, JsonTokenType type) {
+            PushBuffer(chr + String.Empty, type);
+        }
+        
+        void PushBuffer(string value, JsonTokenType type) {
+            
+            if (String.IsNullOrEmpty(value)) return;
 
-            if (Buffer == "") return;
+            if (type == JsonTokenType.Other) {
 
-            Match match = Regex.Match(Buffer, "^([\\s]+|)(.+?)([\\s]+|)$");
+                if (value == "null" || value == "true" || value == "false") {
+                    Current.Add(new JsonToken(JsonTokenType.Constant, value));
+                    Type = JsonTokenType.Other;
+                    return;
+                }
 
-            if (match.Success) {
-                if (match.Groups[1].Value != "") Current.Add(match.Groups[1].Value);
-                Current.Add(match.Groups[2].Value);
-                if (match.Groups[3].Value != "") Current.Add(match.Groups[3].Value);
-            } else {
-                Current.Add(Buffer);
+                if (Regex.IsMatch(value, "^[0-9]+$")) {
+                    Current.Add(new JsonToken(JsonTokenType.Number, value));
+                    Type = JsonTokenType.Other;
+                    return;
+                }
+
+                if (Regex.IsMatch(value, "^[0-9]+\\.[0-9]+$")) {
+                    Current.Add(new JsonToken(JsonTokenType.Number, value));
+                    Type = JsonTokenType.Other;
+                    return;
+                }
+
+                if (Regex.IsMatch(value, "^-[0-9]+$")) {
+                    Current.Add(new JsonToken(JsonTokenType.Number, value));
+                    Type = JsonTokenType.Other;
+                    return;
+                }
+
+                if (Regex.IsMatch(value, "^-[0-9]+\\.[0-9]+$")) {
+                    Current.Add(new JsonToken(JsonTokenType.Number, value));
+                    Type = JsonTokenType.Other;
+                    return;
+                }
+
             }
 
-            Buffer = "";
+            Match match = Regex.Match(value, "^([\\s]+|)(.+?)([\\s]+|)$");
 
+            if (match.Success) {
+                if (match.Groups[1].Value != "") Current.Add(new JsonToken(type, match.Groups[1].Value));
+                Current.Add(new JsonToken(type, match.Groups[2].Value));
+                if (match.Groups[3].Value != "") Current.Add(new JsonToken(type, match.Groups[3].Value));
+            } else {
+                Current.Add(new JsonToken(type, value));
+            }
+
+            Buffer = String.Empty;
+
+            Type = JsonTokenType.Other;
+
+        }
+
+        void PushBuffer(JsonTokenType type) {
+            PushBuffer(Buffer, type);
         }
 
         #endregion

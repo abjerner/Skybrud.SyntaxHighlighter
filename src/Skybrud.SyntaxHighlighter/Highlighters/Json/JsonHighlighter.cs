@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Web;
 
 namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
@@ -22,35 +21,50 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
         /// <param name="list">The list of tokens.</param>
         /// <returns>Returns the generated HTML.</returns>
         protected virtual string ToHtml(List<object> list) {
+
             string temp = "";
+            
             foreach (object obj in list) {
-                List<object> sublist = obj as List<object>;
-                if (sublist != null) {
-                    temp += ToHtml(sublist);
-                } else {
-                    string str = obj + "";
-                    if (str == "null" || str == "false" || str == "true") {
-                        temp += RenderConstant(str);
-                    } else if (Regex.IsMatch(str, "^[0-9]+$")) {
-                        temp += RenderNumber(str);
-                    } else if (Regex.IsMatch(str, "^[0-9]+\\.[0-9]+$")) {
-                        temp += RenderNumber(str);
-                    } else if (Regex.IsMatch(str, "^-[0-9]+$")) {
-                        temp += RenderNumber(str);
-                    } else if (Regex.IsMatch(str, "^-[0-9]+\\.[0-9]+$")) {
-                        temp += RenderNumber(str);
-                    } else if (str.StartsWith("\"") && str.EndsWith("\"")) {
-                        temp += RenderString(str);
-                    } else if (str.StartsWith("'") && str.EndsWith("'")) {
-                        temp += RenderString(str);
-                    } else if (str.StartsWith("/")) {
-                        temp += RenderComment(str);
-                    } else {
-                        temp += str;
-                    }
+
+                switch (obj) {
+
+                    case List<object> sublist:
+                        temp += ToHtml(sublist);
+                        break;
+
+                    case JsonToken token:
+                        temp += ToHtml(token);
+                        break;
+
                 }
+
             }
+
             return temp;
+
+        }
+
+        protected virtual string ToHtml(JsonToken token) {
+            
+            switch (token.Type) {
+
+                case JsonTokenType.String:
+                    return RenderString(token.Value);
+
+                case JsonTokenType.Comment:
+                    return RenderComment(token.Value);
+
+                case JsonTokenType.Constant:
+                    return RenderConstant(token.Value);
+
+                case JsonTokenType.Number:
+                    return RenderNumber(token.Value);
+
+                default:
+                    return HttpUtility.HtmlEncode(token.Value);
+
+            }
+
         }
 
         /// <summary>
