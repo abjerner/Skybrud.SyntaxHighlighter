@@ -28,14 +28,25 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
             // Some flags used for the tokenizing
             bool escaped = false;
             bool inquotes = false;
+            bool comment = false;
 
             // Iterate through each character of the string
             foreach (char x in inputText) {
                 if (escaped) {
                     Buffer += x;
                     escaped = false;
+                } else if (comment) {
+                    if (x == '\r' || x == '\n') {
+                        PushBuffer();
+                        comment = false;
+                    }
+                    Buffer += x;
                 } else {
-                    if (x == '\\') {
+                    if (!inquotes && x == '/') {
+                        PushBuffer();
+                        comment = true;
+                        Buffer += x;
+                    } else if (x == '\\') {
                         Buffer += x;
                         escaped = true;
                     } else if (x == '\"') {

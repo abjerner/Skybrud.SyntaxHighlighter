@@ -41,6 +41,8 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
                         temp += RenderNumber(str);
                     } else if (str.StartsWith("\"") && str.EndsWith("\"")) {
                         temp += RenderString(str);
+                    } else if (str.StartsWith("/")) {
+                        temp += RenderComment(str);
                     } else {
                         temp += str;
                     }
@@ -74,6 +76,15 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
         /// <returns>Returns the HTML representing the string.</returns>
         protected virtual string RenderString(string value) {
             return "<span class=\"string\">" + HttpUtility.HtmlEncode(value) + "</span>";
+        }
+
+        /// <summary>
+        /// Renders the HTML for a JSON comment.
+        /// </summary>
+        /// <param name="value">The value of the comment.</param>
+        /// <returns>Returns the HTML representing the comment.</returns>
+        protected virtual string RenderComment(string value) {
+            return "<span class=\"comment\">" + HttpUtility.HtmlEncode(value) + "</span>";
         }
     
     }
