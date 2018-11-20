@@ -163,6 +163,8 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
                     return;
                 }
 
+                // TODO: Simplify the four "IsMatch" to a single call
+
                 if (Regex.IsMatch(value, "^[0-9]+$")) {
                     Current.Add(new JsonToken(JsonTokenType.Number, value));
                     Type = JsonTokenType.Other;
