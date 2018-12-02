@@ -37,7 +37,10 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
             char quote = '"';
 
             // Iterate through each character of the string
-            foreach (char x in inputText) {
+            for (int i = 0; i < inputText.Length; i++) {
+
+                char x = inputText[i];
+                char n = i < inputText.Length - 1 ? inputText[i + 1] : (char) 0;
 
                 switch (Type) {
 
@@ -65,13 +68,26 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
                         Buffer += x;
                         break;
 
+                    case JsonTokenType.BlockComment:
+
+                        if (x == '*' && n == '/') {
+                            Buffer += x;
+                            Buffer += n;
+                            i++;
+                            PushBuffer();
+                            continue;
+                        }
+
+                        Buffer += x;
+                        break;
+
                     default:
 
                         switch (x) {
 
                             case '/':
                                 PushBuffer();
-                                Type = JsonTokenType.Comment;
+                                Type = n == '*' ? JsonTokenType.BlockComment : JsonTokenType.Comment;
                                 Buffer += x;
                                 break;
 

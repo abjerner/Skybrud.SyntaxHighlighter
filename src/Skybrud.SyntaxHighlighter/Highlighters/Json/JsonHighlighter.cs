@@ -52,6 +52,7 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
                     return RenderString(token.Value);
 
                 case JsonTokenType.Comment:
+                case JsonTokenType.BlockComment:
                     return RenderComment(token.Value);
 
                 case JsonTokenType.Constant:

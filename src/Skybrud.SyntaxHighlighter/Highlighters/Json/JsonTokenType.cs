@@ -2,6 +2,7 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
 
     public enum JsonTokenType {
         Comment,
+        BlockComment,
         ObjectOpen,
         ObjectClose,
         ArrayOpen,
