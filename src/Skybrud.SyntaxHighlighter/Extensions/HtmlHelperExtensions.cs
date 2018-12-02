@@ -8,6 +8,10 @@ namespace Skybrud.SyntaxHighlighter.Extensions {
 
     public static class HtmlHelperExtensions {
 
+        public static HtmlString Highlight(this HtmlHelper helper, string source, Language language) {
+            return new HtmlString(Highlighter.Highlight(source, language));
+        }
+
         public static HtmlString HighlightCSharp(this HtmlHelper helper, string source) {
             return new HtmlString(Highlighter.HighlightCSharp(source));
         }
