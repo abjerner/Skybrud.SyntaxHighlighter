@@ -9,7 +9,7 @@ using Skybrud.SyntaxHighlighter.Highlighters.Xml;
 
 namespace Skybrud.SyntaxHighlighter {
 
-    public class Highlighter {
+    public static class Highlighter {
         
         /// <summary>
         /// Highlights the specified <paramref name="source"/>.
