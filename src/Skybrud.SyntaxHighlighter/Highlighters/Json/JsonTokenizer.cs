@@ -171,50 +171,70 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
             
             if (String.IsNullOrEmpty(value)) return;
 
-            if (type == JsonTokenType.Other) {
+            //if (type == JsonTokenType.Other) {
 
-                if (value == "null" || value == "true" || value == "false") {
-                    Current.Add(new JsonToken(JsonTokenType.Constant, value));
-                    Type = JsonTokenType.Other;
-                    return;
-                }
+            //    if (value == "null" || value == "true" || value == "false") {
+            //        Current.Add(new JsonToken(JsonTokenType.Constant, value));
+            //        Type = JsonTokenType.Other;
+            //        return;
+            //    }
 
-                // TODO: Simplify the four "IsMatch" to a single call
+            //    // TODO: Simplify the four "IsMatch" to a single call
 
-                if (Regex.IsMatch(value, "^[0-9]+$")) {
-                    Current.Add(new JsonToken(JsonTokenType.Number, value));
-                    Type = JsonTokenType.Other;
-                    return;
-                }
+            //    if (Regex.IsMatch(value, "^[0-9]+$")) {
+            //        Current.Add(new JsonToken(JsonTokenType.Number, value));
+            //        Type = JsonTokenType.Other;
+            //        return;
+            //    }
 
-                if (Regex.IsMatch(value, "^[0-9]+\\.[0-9]+$")) {
-                    Current.Add(new JsonToken(JsonTokenType.Number, value));
-                    Type = JsonTokenType.Other;
-                    return;
-                }
+            //    if (Regex.IsMatch(value, "^[0-9]+\\.[0-9]+$")) {
+            //        Current.Add(new JsonToken(JsonTokenType.Number, value));
+            //        Type = JsonTokenType.Other;
+            //        return;
+            //    }
 
-                if (Regex.IsMatch(value, "^-[0-9]+$")) {
-                    Current.Add(new JsonToken(JsonTokenType.Number, value));
-                    Type = JsonTokenType.Other;
-                    return;
-                }
+            //    if (Regex.IsMatch(value, "^-[0-9]+$")) {
+            //        Current.Add(new JsonToken(JsonTokenType.Number, value));
+            //        Type = JsonTokenType.Other;
+            //        return;
+            //    }
 
-                if (Regex.IsMatch(value, "^-[0-9]+\\.[0-9]+$")) {
-                    Current.Add(new JsonToken(JsonTokenType.Number, value));
-                    Type = JsonTokenType.Other;
-                    return;
-                }
+            //    if (Regex.IsMatch(value, "^-[0-9]+\\.[0-9]+$")) {
+            //        Current.Add(new JsonToken(JsonTokenType.Number, value));
+            //        Type = JsonTokenType.Other;
+            //        return;
+            //    }
 
-            }
+            //}
 
-            Match match = Regex.Match(value, "^([\\s]+|)(.+?)([\\s]+|)$");
+            // If the JSON is indented, there will most likely be some whitespace before and/or after the actual value.
+            // We can use regular expressions to separate the whitespace from the value :D
+            Match match = Regex.Match(value, "^([\\s]+)?(.+?)([\\s]+)?$");
 
             if (match.Success) {
+
+                // Get the value from the regex
+                value = match.Groups[2].Value;
+
+                // Add any whitespace before the value
                 if (match.Groups[1].Value != "") Current.Add(new JsonToken(type, match.Groups[1].Value));
-                Current.Add(new JsonToken(type, match.Groups[2].Value));
+
+                if (value == "null" || value == "true" || value == "false") {
+                    Current.Add(new JsonToken(JsonTokenType.Constant, match.Groups[2].Value));
+                } else if (Regex.IsMatch(match.Groups[2].Value, "^-?[0-9]+(\\.[0-9]+|)$")) {
+                    Current.Add(new JsonToken(JsonTokenType.Number, match.Groups[2].Value));
+                } else {
+                    Current.Add(new JsonToken(type, value));
+                }
+
+                // Add any whitespace after the value
                 if (match.Groups[3].Value != "") Current.Add(new JsonToken(type, match.Groups[3].Value));
+
             } else {
+
+                // Add a new token of "type"
                 Current.Add(new JsonToken(type, value));
+
             }
 
             Buffer = String.Empty;

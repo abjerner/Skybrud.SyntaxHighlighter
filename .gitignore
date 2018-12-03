@@ -5,3 +5,5 @@ src/packages/
 *.user
 *.suo
 src/.vs/
+src/UnitTestProject1/bin/
+src/UnitTestProject1/obj/
