@@ -14,17 +14,17 @@
         /// Indicates that the language is <strong>C#</strong>.
         /// </summary>
         CSharp,
-        
+
         /// <summary>
         /// Indicates that the language is <strong>JSON</strong>.
         /// </summary>
         Json,
-        
+
         /// <summary>
         /// Indicates that the language is <strong>JavaScript</strong>.
         /// </summary>
         JavaScript,
-        
+
         /// <summary>
         /// Indicates that the language is <strong>HTML</strong>.
         /// </summary>

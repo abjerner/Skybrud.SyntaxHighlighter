@@ -24,7 +24,7 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.JavaScript {
             return html;
 
         }
-    
+
     }
 
 }

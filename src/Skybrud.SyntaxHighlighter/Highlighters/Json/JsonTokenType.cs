@@ -4,12 +4,12 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
     /// Enum class indicating the type of a <see cref="JsonToken"/>.
     /// </summary>
     public enum JsonTokenType {
-        
+
         /// <summary>
         /// Indictates that the token is a single-line comment.
         /// </summary>
         Comment,
-        
+
         /// <summary>
         /// Indictates that the token is a multi-line block comment.
         /// </summary>
@@ -19,7 +19,7 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
         /// Indictates that the token is an open object character.
         /// </summary>
         ObjectOpen,
-        
+
         /// <summary>
         /// Indictates that the token is an closing object character.
         /// </summary>
@@ -29,7 +29,7 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
         /// Indictates that the token is an open array character.
         /// </summary>
         ArrayOpen,
-        
+
         /// <summary>
         /// Indictates that the token is an closing object character.
         /// </summary>
@@ -44,7 +44,7 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
         /// Indictates that the token is a number.
         /// </summary>
         Number,
-        
+
         /// <summary>
         /// Indictates that the token is a string.
         /// </summary>

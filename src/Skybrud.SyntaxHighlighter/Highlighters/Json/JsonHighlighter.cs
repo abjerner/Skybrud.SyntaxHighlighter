@@ -26,7 +26,7 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
         protected virtual string ToHtml(List<object> list) {
 
             string temp = "";
-            
+
             foreach (object obj in list) {
 
                 switch (obj) {
@@ -53,7 +53,7 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
         /// <param name="token">The token.</param>
         /// <returns>The HTML representation of <paramref name="token"/>.</returns>
         protected virtual string ToHtml(JsonToken token) {
-            
+
             switch (token.Type) {
 
                 case JsonTokenType.String:
@@ -111,7 +111,7 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
         protected virtual string RenderComment(string value) {
             return $"<span class=\"comment\">{HttpUtility.HtmlEncode(value)}</span>";
         }
-    
+
     }
 
 }

@@ -162,17 +162,17 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
         void Decrement() {
             Stack.Pop();
         }
-        
+
         void PushBuffer() {
             PushBuffer(Type);
         }
-        
+
         void PushBuffer(char chr, JsonTokenType type) {
             PushBuffer(chr + string.Empty, type);
         }
-        
+
         void PushBuffer(string value, JsonTokenType type) {
-            
+
             if (string.IsNullOrEmpty(value)) return;
 
             //if (type == JsonTokenType.Other) {

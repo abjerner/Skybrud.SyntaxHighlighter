@@ -1,5 +1,5 @@
-﻿using System.Text.RegularExpressions;
-using ColorCode;
+﻿using ColorCode;
+using System.Text.RegularExpressions;
 
 namespace Skybrud.SyntaxHighlighter.Highlighters.Xml {
 

@@ -1,5 +1,5 @@
 ﻿namespace Skybrud.SyntaxHighlighter {
-    
+
     /// <summary>
     /// Interface desciring a syntaxt highlighter.
     /// </summary>
