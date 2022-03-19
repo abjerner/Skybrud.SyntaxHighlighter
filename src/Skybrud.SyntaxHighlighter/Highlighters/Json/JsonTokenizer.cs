@@ -1,14 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+
+#pragma warning disable CS1591
 
 namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
 
+    /// <summary>
+    /// Class reponsible for converting a JSON string into tokens.
+    /// </summary>
     public class JsonTokenizer {
 
         #region Properties
 
-        protected Stack<List<object>> Stack { get; private set; }
+        protected Stack<List<object>> Stack { get; }
 
         protected List<object> Current => Stack.Peek();
 
@@ -251,8 +255,13 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
 
         #region Static methods
 
-        public static List<object> GetTokens(string str) {
-            JsonTokenizer tokenizer = new JsonTokenizer(str);
+        /// <summary>
+        /// Returns a list of tokens for the specified JSON <paramref name="source"/>.
+        /// </summary>
+        /// <param name="source">The JSON source to be tokenized.</param>
+        /// <returns>A list of tokens.</returns>
+        public static List<object> GetTokens(string source) {
+            JsonTokenizer tokenizer = new JsonTokenizer(source);
             return tokenizer.Stack.Peek();
         }
 
