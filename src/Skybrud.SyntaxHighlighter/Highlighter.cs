@@ -10,6 +10,9 @@ using Skybrud.SyntaxHighlighter.Highlighters.Xml;
 
 namespace Skybrud.SyntaxHighlighter {
 
+    /// <summary>
+    /// Class with methods for highlighting code various languages.
+    /// </summary>
     public static class Highlighter {
         
         /// <summary>
@@ -19,39 +22,15 @@ namespace Skybrud.SyntaxHighlighter {
         /// <param name="language">The language to be used.</param>
         /// <returns>The highlighted source.</returns>
         public static string Highlight(string source, Language language) {
-
-            try {
-
-                switch (language) {
-
-                    case Language.CSharp:
-                        return HighlightCSharp(source);
-
-                    case Language.Json:
-                        return HighlightJson(source);
-
-                    case Language.JavaScript:
-                        return HighlightJavaScript(source);
-
-                    case Language.Html:
-                        return HighlightHtml(source);
-
-                    case Language.Xml:
-                        return HighlightXml(source);
-
-                    case Language.None:
-                        return "<div class=\"highlight\"><pre>" + source + "</pre></div>";
-
-                    default:
-                        return $"<div class=\"highlight {language.ToLower()}\"><pre>" + source + "</pre></div>";
-
-                }
-
-            } catch (Exception) {
-
-                return $"<div class=\"highlight {language.ToLower()}\"><pre>" + source + "</pre></div>";
-
-            }
+            return language switch {
+                Language.CSharp => HighlightCSharp(source),
+                Language.Json => HighlightJson(source),
+                Language.JavaScript => HighlightJavaScript(source),
+                Language.Html => HighlightHtml(source),
+                Language.Xml => HighlightXml(source),
+                Language.None => $"<div class=\"highlight\"><pre>{source}</pre></div>",
+                _ => $"<div class=\"highlight {language.ToLower()}\"><pre>{source}</pre></div>"
+            };
 
         }
 
@@ -64,7 +43,7 @@ namespace Skybrud.SyntaxHighlighter {
             try {
                 return new CSharpHighlighter().Highlight(source);
             } catch (Exception) {
-                return "<div class=\"highlight csharp\"><pre>" + source + "</pre></div>";
+                return $"<div class=\"highlight csharp\"><pre>{source}</pre></div>";
             }
         }
 
@@ -77,7 +56,7 @@ namespace Skybrud.SyntaxHighlighter {
             try {
                 return new XmlHighlighter().Highlight(source);
             } catch (Exception) {
-                return "<div class=\"highlight xml\"><pre>" + source + "</pre></div>";
+                return $"<div class=\"highlight xml\"><pre>{source}</pre></div>";
             }
         }
 
@@ -88,7 +67,7 @@ namespace Skybrud.SyntaxHighlighter {
         /// <returns>The HTML with the formatted code.</returns>
         public static string HighlightXml(XNode xml) {
             if (xml == null) throw new ArgumentNullException(nameof(xml));
-            return HighlightXml(xml + "");
+            return HighlightXml(xml.ToString());
         }
 
         /// <summary>
@@ -120,7 +99,7 @@ namespace Skybrud.SyntaxHighlighter {
             try {
                 return new JavaScriptHighlighter().Highlight(source);
             } catch (Exception) {
-                return "<div class=\"highlight javascript\"><pre>" + source + "</pre></div>";
+                return $"<div class=\"highlight javascript\"><pre>{source}</pre></div>";
             }
         }
 
@@ -133,7 +112,7 @@ namespace Skybrud.SyntaxHighlighter {
             try {
                 return new JsonHighlighter().Highlight(source);
             } catch (Exception) {
-                return "<div class=\"highlight json\"><pre>" + source + "</pre></div>";
+                return $"<div class=\"highlight json\"><pre>{source}</pre></div>";
             }
         }
 
@@ -148,7 +127,7 @@ namespace Skybrud.SyntaxHighlighter {
                 source = JToken.Parse(source).ToString(formatting);
                 return new JsonHighlighter().Highlight(source);
             } catch (Exception) {
-                return "<div class=\"highlight json\"><pre>" + source + "</pre></div>";
+                return $"<div class=\"highlight json\"><pre>{source}</pre></div>";
             }
         }
 
