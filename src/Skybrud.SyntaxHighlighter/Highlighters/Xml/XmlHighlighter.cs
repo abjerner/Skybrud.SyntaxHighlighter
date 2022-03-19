@@ -3,15 +3,19 @@ using ColorCode;
 
 namespace Skybrud.SyntaxHighlighter.Highlighters.Xml {
 
-    internal class XmlHighlighter {
+    public class XmlHighlighter {
 
-        public string Highlight(string source) {
+        public virtual string Highlight(string source) {
+            return Highlight(source, "xml");
+        }
+
+        protected virtual string Highlight(string source, string languageName) {
 
             var formatter = new HtmlFormatter();
 
             string html = formatter.GetHtmlString(source, Languages.Xml);
 
-            html = html.Replace("<div style=\"color:#000000;background-color:#FFFFFF;\">", "<div class=\"highlight xml\">");
+            html = html.Replace("<div style=\"color:#000000;background-color:#FFFFFF;\">", $"<div class=\"highlight {languageName}\">");
 
             html = html.Replace("<span style=\"color:#0000FF;\">&lt;?</span>", "<span class=\"operator\">&lt;?</span>");
             html = html.Replace("<span style=\"color:#0000FF;\">?&gt;</span>", "<span class=\"operator\">?&gt;</span>");
@@ -42,7 +46,7 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Xml {
             return html;
 
         }
-    
+
     }
 
 }
