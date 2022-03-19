@@ -10,14 +10,14 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.CSharp {
 
         public string Highlight(string source) {
 
-            CodeColorizer colorizer = new CodeColorizer();
+            var formatter = new HtmlFormatter();
 
-            string html = colorizer.Colorize(source, Languages.CSharp);
+            string html = formatter.GetHtmlString(source, Languages.CSharp);
 
-            html = html.Replace("<div style=\"color:Black;background-color:White;\">", "<div class=\"highlight csharp\">");
+            html = html.Replace("<div style=\"color:#000000;background-color:#FFFFFF;\">", "<div class=\"highlight csharp\">");
 
-            html = html.Replace("<span style=\"color:Blue;\">", "<span class=\"keyword\">");
-            html = html.Replace("<span style=\"color:Green;\">", "<span class=\"comment\">");
+            html = html.Replace("<span style=\"color:#0000FF;\">", "<span class=\"keyword\">");
+            html = html.Replace("<span style=\"color:#008000;\">", "<span class=\"comment\">");
             html = html.Replace("<span style=\"color:#A31515;\">", "<span class=\"string\">");
 
             List<string> lines = new List<string>();
@@ -61,6 +61,8 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.CSharp {
             }
 
             html = String.Join("\n", lines);
+
+            html = Regex.Replace(html, "<span>([0-9]+|-[0-9]+|[0-9]+\\.[0-9]+|-[0-9]+\\.[0-9]+)</span>", x => $"<span class=\"constant\">{x.Groups[1]}</span>");
 
             return html;
 

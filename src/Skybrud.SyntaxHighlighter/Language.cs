@@ -9,7 +9,8 @@
         Json,
         JavaScript,
         Html,
-        Xml
+        Xml,
+        NuGet
     }
 
 }
