@@ -128,7 +128,7 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.JavaScript {
         }
 
         private bool Next(string line, int offset, string compare) {
-            return String.Join("", line.Skip(offset).Take(compare.Length)) == compare;
+            return string.Join("", line.Skip(offset).Take(compare.Length)) == compare;
         }
 
         private string[] GetLineTokens(string line) {

@@ -164,12 +164,12 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
         }
         
         void PushBuffer(char chr, JsonTokenType type) {
-            PushBuffer(chr + String.Empty, type);
+            PushBuffer(chr + string.Empty, type);
         }
         
         void PushBuffer(string value, JsonTokenType type) {
             
-            if (String.IsNullOrEmpty(value)) return;
+            if (string.IsNullOrEmpty(value)) return;
 
             //if (type == JsonTokenType.Other) {
 
@@ -237,7 +237,7 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
 
             }
 
-            Buffer = String.Empty;
+            Buffer = string.Empty;
 
             Type = JsonTokenType.Other;
 

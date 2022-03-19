@@ -54,13 +54,13 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.CSharp {
 
                 }
 
-                line = String.Join("", tokens);
+                line = string.Join("", tokens);
 
                 lines.Add(line);
 
             }
 
-            html = String.Join("\n", lines);
+            html = string.Join("\n", lines);
 
             html = Regex.Replace(html, "<span>([0-9]+|-[0-9]+|[0-9]+\\.[0-9]+|-[0-9]+\\.[0-9]+)</span>", x => $"<span class=\"constant\">{x.Groups[1]}</span>");
 
@@ -69,7 +69,7 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.CSharp {
         }
 
         private bool Next(string line, int offset, string compare) {
-            return String.Join("", line.Skip(offset).Take(compare.Length)) == compare;
+            return string.Join("", line.Skip(offset).Take(compare.Length)) == compare;
         }
 
         private string[] GetLineTokens(string line) {
