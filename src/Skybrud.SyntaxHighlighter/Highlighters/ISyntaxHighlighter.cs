@@ -1,9 +1,9 @@
-﻿namespace Skybrud.SyntaxHighlighter {
+﻿namespace Skybrud.SyntaxHighlighter.Highlighters {
 
     /// <summary>
-    /// Interface desciring a syntaxt highlighter.
+    /// Interface desciring a syntax highlighter.
     /// </summary>
-    public interface ISyntaxtHighlighter {
+    public interface ISyntaxHighlighter {
 
         /// <summary>
         /// Highlights the specified <paramref name="source"/>.

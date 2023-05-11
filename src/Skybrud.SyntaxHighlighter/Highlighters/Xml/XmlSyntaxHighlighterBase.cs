@@ -3,12 +3,17 @@ using System.Text.RegularExpressions;
 
 namespace Skybrud.SyntaxHighlighter.Highlighters.Xml {
 
-    public class XmlHighlighter {
-
-        public virtual string Highlight(string source) {
-            return Highlight(source, "xml");
-        }
-
+    /// <summary>
+    /// Base class for XML based syntaxt highligthers.
+    /// </summary>
+    public class XmlSyntaxHighlighterBase {
+        
+        /// <summary>
+        /// Highlights the specified XML <paramref name="source"/>.
+        /// </summary>
+        /// <param name="source">The XML source code to be formatted.</param>
+        /// <param name="languageName">The language name - eg. <c>xml</c> or <c>html</c>.</param>
+        /// <returns>The HTML with the formatted code.</returns>
         protected virtual string Highlight(string source, string languageName) {
 
             var formatter = new HtmlFormatter();

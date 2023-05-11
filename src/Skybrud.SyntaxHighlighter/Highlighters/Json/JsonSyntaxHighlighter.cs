@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Skybrud.Essentials.Json;
+using System;
+using System.Collections.Generic;
 using System.Web;
 
 namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
@@ -6,17 +10,62 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
     /// <summary>
     /// JSON syntax highligther.
     /// </summary>
-    public class JsonHighlighter {
+    public class JsonSyntaxHighlighter : IJsonSyntaxHighlighter {
+
+        #region Public member methods
 
         /// <summary>
-        /// Highlights the specified JSON string.
+        /// Highlights the specified JSON <paramref name="source"/>.
         /// </summary>
-        /// <param name="str">The JSON strin to be highlighted.</param>
-        /// <returns>The highlighted JSON string.</returns>
-        public virtual string Highlight(string str) {
-            List<object> tokens = JsonTokenizer.GetTokens(str ?? string.Empty);
-            return $"<div class=\"highlight json\"><pre>{ToHtml(tokens)}</pre></div>";
+        /// <param name="source">The JSON source code to be formatted.</param>
+        /// <returns>The HTML with the formatted code.</returns>
+        public virtual string HighlightJson(string source) {
+           
+            if (source == null) throw new ArgumentNullException(nameof(source));
+
+            try {
+                List<object> tokens = JsonTokenizer.GetTokens(source);
+                return $"<div class=\"highlight json\"><pre>{ToHtml(tokens)}</pre></div>";
+            } catch (Exception) {
+                return $"<div class=\"highlight json\"><pre>{source}</pre></div>";
+            }
+
         }
+
+        /// <summary>
+        /// Highlights the specified JSON <paramref name="source"/>.
+        /// </summary>
+        /// <param name="source">The JSON source code to be formatted.</param>
+        /// <param name="formatting">The formatting to be used.</param>
+        /// <returns>The HTML with the formatted code.</returns>
+        public virtual string HighlightJson(string source, Formatting formatting) {
+            return HighlightJson(JsonUtils.TryParseJsonToken(source, out JToken token) ? token.ToString(formatting) : source);
+        }
+
+        /// <summary>
+        /// Highlights the specified JSON <paramref name="token"/>.
+        /// </summary>
+        /// <param name="token">The JSON token to be formatted.</param>
+        /// <returns>The HTML with the formatted code.</returns>
+        public virtual string HighlightJson(JToken token) {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+            return HighlightJson(token.ToString());
+        }
+
+        /// <summary>
+        /// Highlights the specified JSON <paramref name="token"/>.
+        /// </summary>
+        /// <param name="token">The JSON token to be formatted.</param>
+        /// <param name="formatting">The formatting to be used.</param>
+        /// <returns>The HTML with the formatted code.</returns>
+        public virtual string HighlightJson(JToken token, Formatting formatting) {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+            return HighlightJson(token.ToString(formatting));
+        }
+
+        #endregion
+
+        #region Private helper methods
 
         /// <summary>
         /// Converts a list of tokens into the highlighted HTML.
@@ -111,6 +160,8 @@ namespace Skybrud.SyntaxHighlighter.Highlighters.Json {
         protected virtual string RenderComment(string value) {
             return $"<span class=\"comment\">{HttpUtility.HtmlEncode(value)}</span>";
         }
+
+        #endregion
 
     }
 

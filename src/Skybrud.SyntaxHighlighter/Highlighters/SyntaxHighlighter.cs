@@ -9,12 +9,67 @@ using Skybrud.SyntaxHighlighter.Highlighters.Xml;
 using System;
 using System.Xml.Linq;
 
-namespace Skybrud.SyntaxHighlighter {
+namespace Skybrud.SyntaxHighlighter.Highlighters {
 
     /// <summary>
-    /// Default implementation of the <see cref="ISyntaxtHighlighter"/> interface.
+    /// Default implementation of the <see cref="ISyntaxHighlighter"/> interface.
     /// </summary>
-    public class SyntaxHighlighter : ISyntaxtHighlighter {
+    public class SyntaxHighlighter : ISyntaxHighlighter,
+        ICSharpSyntaxHighlighter,
+        IHtmlSyntaxHighlighter,
+        IJavaScriptSyntaxHighlighter,
+        IJsonSyntaxHighlighter,
+        IXmlSyntaxHighlighter {
+
+        private ICSharpSyntaxHighlighter _csharp = new CSharpSyntaxHighlighter();
+        private IHtmlSyntaxHighlighter _html = new HtmlSyntaxHighlighter();
+        private IJavaScriptSyntaxHighlighter _javascript = new JavaScriptSyntaxHighlighter();
+        private IJsonSyntaxHighlighter _json = new JsonSyntaxHighlighter();
+        private IXmlSyntaxHighlighter _xml = new XmlSyntaxHighlighter();
+
+        #region Properties
+
+        /// <summary>
+        /// Gets a reference to the <see cref="ICSharpSyntaxHighlighter"/> to be used internally for this highlighter.
+        /// </summary>
+        public ICSharpSyntaxHighlighter CSharp {
+            get => _csharp;
+            set => _csharp = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        /// <summary>
+        /// Gets a reference to the <see cref="IHtmlSyntaxHighlighter"/> to be used internally for this highlighter.
+        /// </summary>
+        public IHtmlSyntaxHighlighter Html {
+            get => _html;
+            set => _html = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        /// <summary>
+        /// Gets a reference to the <see cref="IJavaScriptSyntaxHighlighter"/> to be used internally for this highlighter.
+        /// </summary>
+        public IJavaScriptSyntaxHighlighter JavaScript {
+            get => _javascript;
+            set => _javascript = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        /// <summary>
+        /// Gets a reference to the <see cref="IJsonSyntaxHighlighter"/> to be used internally for this highlighter.
+        /// </summary>
+        public IJsonSyntaxHighlighter Json {
+            get => _json;
+            set => _json = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        /// <summary>
+        /// Gets a reference to the <see cref="IXmlSyntaxHighlighter"/> to be used internally for this highlighter.
+        /// </summary>
+        public IXmlSyntaxHighlighter Xml {
+            get => _xml;
+            set => _xml = value ?? throw new ArgumentNullException(nameof(value));
+        }
+
+        #endregion
 
         /// <summary>
         /// Highlights the specified <paramref name="source"/>.
@@ -39,12 +94,8 @@ namespace Skybrud.SyntaxHighlighter {
         /// </summary>
         /// <param name="source">The C# source code to be formatted.</param>
         /// <returns>The HTML with the formatted code.</returns>
-        protected virtual string HighlightCSharp(string source) {
-            try {
-                return new CSharpHighlighter().Highlight(source);
-            } catch (Exception) {
-                return $"<div class=\"highlight csharp\"><pre>{source}</pre></div>";
-            }
+        public virtual string HighlightCSharp(string source) {
+            return CSharp.HighlightCSharp(source);
         }
 
         /// <summary>
@@ -52,12 +103,8 @@ namespace Skybrud.SyntaxHighlighter {
         /// </summary>
         /// <param name="source">The XML source code to be formatted.</param>
         /// <returns>The HTML with the formatted code.</returns>
-        protected virtual string HighlightXml(string source) {
-            try {
-                return new XmlHighlighter().Highlight(source);
-            } catch (Exception) {
-                return $"<div class=\"highlight xml\"><pre>{source}</pre></div>";
-            }
+        public virtual string HighlightXml(string source) {
+            return Xml.HighlightXml(source);
         }
 
         /// <summary>
@@ -65,9 +112,8 @@ namespace Skybrud.SyntaxHighlighter {
         /// </summary>
         /// <param name="xml">The <see cref="XNode"/> to be formatted.</param>
         /// <returns>The HTML with the formatted code.</returns>
-        protected virtual string HighlightXml(XNode xml) {
-            if (xml == null) throw new ArgumentNullException(nameof(xml));
-            return HighlightXml(xml.ToString());
+        public virtual string HighlightXml(XNode xml) {
+            return Xml.HighlightXml(xml);
         }
 
         /// <summary>
@@ -76,9 +122,8 @@ namespace Skybrud.SyntaxHighlighter {
         /// <param name="xml">The <see cref="XNode"/> to be formatted.</param>
         /// <param name="options">The save options to be used when converting <paramref name="xml"/> to string.</param>
         /// <returns>The HTML with the formatted code.</returns>
-        protected virtual string HighlightXml(XNode xml, SaveOptions options) {
-            if (xml == null) throw new ArgumentNullException(nameof(xml));
-            return HighlightXml(xml.ToString(options));
+        public virtual string HighlightXml(XNode xml, SaveOptions options) {
+            return Xml.HighlightXml(xml, options);
         }
 
         /// <summary>
@@ -86,12 +131,8 @@ namespace Skybrud.SyntaxHighlighter {
         /// </summary>
         /// <param name="source">The HTML source code to be formatted.</param>
         /// <returns>The HTML with the formatted code.</returns>
-        protected virtual string HighlightHtml(string source) {
-            try {
-                return new HtmlHighlighter().Highlight(source);
-            } catch (Exception) {
-                return $"<div class=\"highlight html\"><pre>{source}</pre></div>";
-            }
+        public virtual string HighlightHtml(string source) {
+            return Html.HighlightHtml(source);
         }
 
         /// <summary>
@@ -99,12 +140,8 @@ namespace Skybrud.SyntaxHighlighter {
         /// </summary>
         /// <param name="source">The JavaScript source code to be formatted.</param>
         /// <returns>The HTML with the formatted code.</returns>
-        protected virtual string HighlightJavaScript(string source) {
-            try {
-                return new JavaScriptHighlighter().Highlight(source);
-            } catch (Exception) {
-                return $"<div class=\"highlight javascript\"><pre>{source}</pre></div>";
-            }
+        public virtual string HighlightJavaScript(string source) {
+            return JavaScript.HighlightJavaScript(source);
         }
 
         /// <summary>
@@ -112,12 +149,8 @@ namespace Skybrud.SyntaxHighlighter {
         /// </summary>
         /// <param name="source">The JSON source code to be formatted.</param>
         /// <returns>The HTML with the formatted code.</returns>
-        protected virtual string HighlightJson(string source) {
-            try {
-                return new JsonHighlighter().Highlight(source);
-            } catch (Exception) {
-                return $"<div class=\"highlight json\"><pre>{source}</pre></div>";
-            }
+        public virtual string HighlightJson(string source) {
+            return Json.HighlightJson(source);
         }
 
         /// <summary>
@@ -126,13 +159,8 @@ namespace Skybrud.SyntaxHighlighter {
         /// <param name="source">The JSON source code to be formatted.</param>
         /// <param name="formatting">The formatting to be used.</param>
         /// <returns>The HTML with the formatted code.</returns>
-        protected virtual string HighlightJson(string source, Formatting formatting) {
-            try {
-                source = JToken.Parse(source).ToString(formatting);
-                return new JsonHighlighter().Highlight(source);
-            } catch (Exception) {
-                return $"<div class=\"highlight json\"><pre>{source}</pre></div>";
-            }
+        public virtual string HighlightJson(string source, Formatting formatting) {
+            return Json.HighlightJson(source, formatting);
         }
 
         /// <summary>
@@ -140,9 +168,8 @@ namespace Skybrud.SyntaxHighlighter {
         /// </summary>
         /// <param name="token">The JSON token to be formatted.</param>
         /// <returns>The HTML with the formatted code.</returns>
-        protected virtual string HighlightJson(JToken token) {
-            if (token == null) throw new ArgumentNullException(nameof(token));
-            return HighlightJson(token.ToString());
+        public virtual string HighlightJson(JToken token) {
+            return Json.HighlightJson(token);
         }
 
         /// <summary>
@@ -151,9 +178,8 @@ namespace Skybrud.SyntaxHighlighter {
         /// <param name="token">The JSON token to be formatted.</param>
         /// <param name="formatting">The formatting to be used.</param>
         /// <returns>The HTML with the formatted code.</returns>
-        protected virtual string HighlightJson(JToken token, Formatting formatting) {
-            if (token == null) throw new ArgumentNullException(nameof(token));
-            return HighlightJson(token.ToString(formatting));
+        public virtual string HighlightJson(JToken token, Formatting formatting) {
+            return Json.HighlightJson(token, formatting);
         }
 
     }

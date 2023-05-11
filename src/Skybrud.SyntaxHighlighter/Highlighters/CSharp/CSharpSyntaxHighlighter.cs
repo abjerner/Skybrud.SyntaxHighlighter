@@ -6,9 +6,17 @@ using System.Text.RegularExpressions;
 
 namespace Skybrud.SyntaxHighlighter.Highlighters.CSharp {
 
-    internal class CSharpHighlighter {
+    /// <summary>
+    /// JSON syntax highligther.
+    /// </summary>
+    public class CSharpSyntaxHighlighter : ICSharpSyntaxHighlighter {
 
-        public string Highlight(string source) {
+        /// <summary>
+        /// Highlights the specified C# <paramref name="source"/>.
+        /// </summary>
+        /// <param name="source">The C# string to be highlighted.</param>
+        /// <returns>The highlighted C# string.</returns>
+        public virtual string HighlightCSharp(string source) {
 
             var formatter = new HtmlFormatter();
 
